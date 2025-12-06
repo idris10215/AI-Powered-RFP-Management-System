@@ -19,6 +19,16 @@ const rfpSchema = new mongoose.Schema( {
         deadline : String
     },
 
+    analysis: {
+        type: mongoose.Schema.Types.Mixed,
+        default: null
+    },
+
+    analyzedProposalCount: {
+        type: Number,
+        default: 0
+    },
+
     status : {
         type : String,
         enum : ["Draft", "Sent", "Closed"],

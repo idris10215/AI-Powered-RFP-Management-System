@@ -13,9 +13,13 @@
   "type": "module",
   "dependencies": {
     "@google/genai": "^1.30.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
     "imap-simple": "^5.1.0",
     "lodash": "^4.17.21",
     "mailparser": "^3.9.0",
+    "mongoose": "^9.0.1",
     "nodemailer": "^7.0.11"
   }
 }

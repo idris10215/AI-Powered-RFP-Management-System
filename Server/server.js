@@ -3,10 +3,13 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import rfpRoutes from './routes/rfp.routes.js';
 import vendorRoutes from './routes/vendor.routes.js';
+import cors from 'cors';
 
 dotenv.config();
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 const port = process.env.PORT ;
 

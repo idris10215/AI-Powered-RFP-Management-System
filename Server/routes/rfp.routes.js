@@ -1,8 +1,9 @@
 import express from "express";
-import { createRFP, sendRFP, getAllRFP, getRFPById, checkInbox, analyzeRFPProposals } from "../controllers/rfp.controller.js";
+import { createRFP, sendRFP, getAllRFP, getRFPById, checkInbox, analyzeRFPProposals, getAllProposals } from "../controllers/rfp.controller.js";
 
 const router = express.Router();
 
+router.get("/proposals", getAllProposals);
 router.get("/check-inbox", checkInbox);
 
 router.post("/", createRFP);

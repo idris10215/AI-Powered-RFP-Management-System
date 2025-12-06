@@ -105,7 +105,14 @@ export const analyzeProposals = async (rfpData, proposalData) => {
         "recommendedVendorId": "The ID of the best vendor from the list above",
         "reasoning": "A clear 2-sentence explanation why they won (e.g. 'Best price and meets deadline').",
         "rankings": [
-           { "vendorName": "Name", "score": "Number 1-10", "note": "Short note" }
+           { 
+             "vendorName": "Name", 
+             "score": "Number 1-10", 
+             "cost": "Cost amount", 
+             "deliveryTime": "Delivery time", 
+             "warranty": "Warranty period",
+             "note": "Short note" 
+           }
         ]
       }`;
 
