@@ -26,6 +26,11 @@ const proposalSchema = new mongoose.Schema( {
         summary : String
     },
 
+    messageId: {
+        type: String, 
+        unique: true
+    },
+
     createdAt : {
         type : Date,
         default : Date.now

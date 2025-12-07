@@ -50,8 +50,9 @@ export const getRFPById = async (req, res) => {
       return res.status(404).json({ message: "RFP not found" });
     }
     const proposals = await Proposal.find({ rfp: rfpId }).populate('vendor');
+    const validProposals = proposals.filter(p => p.vendor);
 
-    return res.status(200).json({ rfp, proposals });
+    return res.status(200).json({ rfp, proposals: validProposals });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -114,10 +115,15 @@ export const checkInbox = async (req, res) => {
         const parsedProposal = await parseProposal(email.text);
 
         if(parsedProposal) {
-            const existingProposal = await Proposal.findOne({ 
-                rfp: email.rfpId, 
-                vendor: vendor._id 
-            });
+            // Check for duplicates (by MessageID OR Vendor+RFP)
+            const duplicateCheck = {
+                $or: [
+                    { rfp: email.rfpId, vendor: vendor._id },
+                    ...(email.messageId ? [{ messageId: email.messageId }] : [])
+                ]
+            };
+
+            const existingProposal = await Proposal.findOne(duplicateCheck);
 
             if (existingProposal) {
                 console.log(`Duplicate proposal skipped for Vendor: ${vendor.email}, RFP: ${email.rfpId}`);
@@ -128,6 +134,7 @@ export const checkInbox = async (req, res) => {
                 rfp: email.rfpId,
                 vendor: vendor._id,
                 rawText: email.text,
+                messageId: email.messageId, // Save the ID
                 parsedData : {
                     cost : parsedProposal.cost,
                     deliveryTime : parsedProposal.deliveryTime,
@@ -156,7 +163,10 @@ export const getAllProposals = async (req, res) => {
     try {
         const proposals = await Proposal.find().populate('rfp vendor').sort({ createdAt: -1 });
         console.log(`Fetching all proposals: Found ${proposals.length}`);
-        return res.status(200).json({ proposals });
+        
+        const validProposals = proposals.filter(p => p.vendor && p.rfp);
+        
+        return res.status(200).json({ proposals: validProposals });
     } catch (error) {
         console.error("Error fetching proposals:", error);
         res.status(500).json({ message: "Server error", error: error.message });

@@ -59,7 +59,8 @@ export const recieveEmail = async () => {
                             rfpId: match[1],
                             vendorEmail: fromEmail,
                             text: textBody,
-                            subject: subject
+                            subject: subject,
+                            messageId: parsed.messageId
                         });
                     }
                 }

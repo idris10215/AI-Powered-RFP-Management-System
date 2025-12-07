@@ -71,7 +71,11 @@ const RFPDetails = () => {
     }
   };
 
-  const uniqueVendors = Array.from(new Map(proposals.map(p => [p.vendor._id, p.vendor])).values());
+  const uniqueVendors = Array.from(new Map(
+    proposals
+      .filter(p => p.vendor)
+      .map(p => [p.vendor._id, p.vendor])
+  ).values());
 
   const toggleVendor = (vId) => {
     setSelectedVendors(prev => 
