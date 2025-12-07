@@ -1,46 +1,82 @@
-AI-Powered RFP Management System
-A full-stack intelligent procurement solution designed to automate the Request for Proposal (RFP) lifecycle. This system uses Generative AI to parse natural language requirements, manage vendor communications via real emails, and analyze incoming proposals to recommend the best vendor.
+# AI-Powered RFP Management System
 
-Submission for Aerchain SDE Assignment
+A full-stack intelligent procurement platform designed to **automate the entire Request for Proposal (RFP) lifecycle**.  
+This system leverages **Generative AI** to convert natural-language requirements into structured data, manage vendor communications via real email channels, and analyze proposals to recommend the best vendor.
 
-📺 Demo Video
-[Link to your Demo Video Here] (Please watch the video for a complete end-to-end walkthrough)
+> **Submission for Aerchain SDE Assignment**
 
-🚀 Features
-AI-Driven RFP Creation: Converts unstructured text (e.g., "I need 20 MacBooks...") into structured JSON requirements.
+---
 
-Vendor Management: Select and invite vendors from a curated directory.
+## 📺 Demo Video
+👉 *[Insert your demo video link here]*  
+(Please watch for a complete end-to-end walkthrough of the system.)
 
-Automated Email Dispatch: Sends formatted RFP emails to vendors using Nodemailer.
+---
 
-Inbound Reply Parsing: Listens to real email inboxes via IMAP, matches replies to RFPs using Reference IDs, and extracts pricing/delivery data using AI.
+## 🚀 Features
 
-Smart Analysis: Compares multiple vendor proposals and generates a ranked recommendation with reasoning.
+### **1. AI-Driven RFP Creation**
+- Converts unstructured text  
+  *Example:* “I need 20 MacBooks...”  
+- Into structured JSON with specifications, quantities, and constraints.
 
-🛠️ Tech Stack
-Frontend: React, Tailwind CSS, Lucide React, Axios
+### **2. Vendor Management**
+- Browse through a curated vendor directory.
+- Select vendors to invite for the RFP.
 
-Backend: Node.js, Express.js
+### **3. Automated Email Dispatch**
+- Sends professional RFP emails via **Nodemailer (SMTP)**.
+- Each outgoing mail contains a unique Reference ID for tracking.
 
-Database: MongoDB (Mongoose)
+### **4. Inbound Reply Parsing**
+- Reads a real email inbox using **IMAP (imap-simple)**.
+- Matches replies using **subject-line Ref IDs**.
+- Extracts pricing/delivery terms using AI models.
 
-AI Provider: Google Gemini (gemini-2.5-flash)
+### **5. Smart Proposal Analysis**
+- Compares vendor proposals.
+- Generates a **ranked vendor recommendation** with reasoning.
 
-Email Services: nodemailer (SMTP), imap-simple & mailparser (IMAP)
+---
 
-⚙️ Project Setup
-Prerequisites
-Node.js (v18+)
+## 🛠️ Tech Stack
 
-MongoDB (Local or Atlas URI)
+### **Frontend**
+- React  
+- Tailwind CSS  
+- Lucide React  
+- Axios  
 
-A Gmail account with App Password enabled (for IMAP/SMTP).
+### **Backend**
+- Node.js  
+- Express.js  
 
-1. Environment Variables
-Create a .env file in the server directory with the following credentials:
+### **Database**
+- MongoDB (Mongoose)
 
-Code snippet
+### **AI Provider**
+- Google Gemini (`gemini-2.5-flash`)
 
+### **Email Services**
+- Nodemailer (SMTP)  
+- imap-simple + mailparser (IMAP)
+
+---
+
+## ⚙️ Project Setup
+
+### **Prerequisites**
+- Node.js (v18+)
+- MongoDB (Local or Atlas)
+- Gmail account with **App Password** enabled (for SMTP/IMAP)
+
+---
+
+## 1. Environment Variables
+
+Create a `.env` file under `/server`:
+
+```env
 PORT=3000
 MONGODB_URI=your_mongodb_connection_string
 GEMINI_API_KEY=your_google_gemini_api_key
@@ -49,79 +85,126 @@ GEMINI_API_KEY=your_google_gemini_api_key
 EMAIL_USER=your_test_email@gmail.com
 EMAIL_PASS=your_16_digit_app_password
 2. Installation
-Backend:
-
-Bash
-
+Backend
+bash
+Copy code
 cd server
 npm install
 npm start
 # Server runs on http://localhost:3000
-Frontend:
-
-Bash
-
+Frontend
+bash
+Copy code
 cd client
 npm install
 npm run dev
 # Frontend runs on http://localhost:5173
-3. Seed Data (Optional)
-To populate the database with dummy vendors:
-
-Bash
-
+3. Seed Dummy Vendor Data (Optional)
+bash
+Copy code
 cd server
 node seed.js
 📖 Usage Workflow
-Create RFP: Go to "New RFP" and type a request (e.g., "I need 50 chairs for the new office, budget $5000").
+1. Create RFP
+Navigate to New RFP and type a natural language request:
 
-Send to Vendors: Select vendors from the list and hit "Send". Check your Vendor Email Inbox to see the arrival.
+“I need 50 chairs for the new office, budget $5000.”
 
-Vendor Reply: From the Vendor Email, click Reply and type a quote (e.g., "We can provide these for $4500 in 5 days"). Do not change the Subject Line.
+AI converts it into structured JSON.
 
-Parse Replies: Go to the Inbox page in the Dashboard and click "Refresh Inbox". The system will fetch the email and extract the data.
+2. Send to Vendors
+Select vendors from the list.
 
-Analyze: Go to the RFP Details page and click "Analyze Proposals" to see the AI recommendation.
+Click Send.
+
+Vendors receive a professional RFP email.
+
+3. Vendor Reply
+Vendors reply by email with a quote:
+
+“We can provide these for $4500 in 5 days.”
+
+⚠️ They must not change the subject line (contains Ref ID).
+
+4. Parse Replies
+In Dashboard → Inbox, click:
+
+Refresh Inbox
+
+The system:
+
+Connects via IMAP
+
+Fetches new emails
+
+Matches using Ref ID
+
+Extracts pricing/delivery using AI
+
+5. Analyze Proposals
+On the RFP Details page → click:
+
+Analyze Proposals
+
+AI compares proposals and generates:
+
+Ranked vendors
+
+Score reasoning
+
+Recommended choice
 
 📡 API Documentation
 RFP Endpoints
-POST /api/rfp: Create a new RFP from natural language.
-
-GET /api/rfp: Get all RFPs (Drafts & Sent).
-
-POST /api/rfp/send: Send RFP emails to selected vendors.
-
-GET /api/rfp/check-inbox: Trigger IMAP fetch to parse new email replies.
-
-GET /api/rfp/:id/analysis: Compare proposals and get AI recommendation.
+Method	Endpoint	Description
+POST	/api/rfp	Create a new RFP from natural text
+GET	/api/rfp	Get all RFPs
+POST	/api/rfp/send	Send RFP emails to vendors
+GET	/api/rfp/check-inbox	Trigger IMAP fetch + parse replies
+GET	/api/rfp/:id/analysis	Compare proposals & get AI recommendation
 
 Vendor Endpoints
-GET /api/vendors: List all available vendors.
+Method	Endpoint	Description
+GET	/api/vendors	List all vendors
 
 🧠 Design Decisions & Assumptions
-1. The "Ref ID" Architecture
-Decision: I appended a unique Reference ID (Ref:6930...) to the email subject line when sending RFPs.
-
-Reasoning: This is the most reliable way to link an unstructured inbound email back to a specific database record without forcing vendors to use a portal.
-
-Assumption: Vendors will not modify the Subject line when replying.
+1. Reference ID in Subject Line
+Decision: Add unique Ref:6930... in subject line for tracking.
+Reason: Most reliable way to match inbound replies without a vendor portal.
+Assumption: Vendor won’t modify subject line.
 
 2. AI Extraction Strategy
-Decision: I used a two-step AI process. First, to structure the user's request. Second, to "clean" the vendor's messy email text into standardized JSON (Cost, Delivery Days).
+Decision: Two-step AI processing:
 
-Assumption: Vendors provide pricing and delivery terms in the email body.
+Structure user's natural text
+
+Normalize vendor replies into JSON (Cost, Delivery Days)
+
+Assumption: Vendors mention price + delivery in email body.
 
 3. Single-User Scope
-Decision: As per the assignment guidelines, I focused on a single-user experience and did not implement multi-tenant authentication to prioritize the core procurement logic.
+Decision: No multi-tenant auth, focusing on core procurement logic.
+Reason: Matches assignment requirements.
 
 🤖 AI Tools Usage
-Gemini Code Assist & ChatGPT: Used to scaffold the React frontend components (Tailwind layouts) and debug the IMAP connection logic.
+Used:
+Gemini Code Assist
 
-Impact: Significantly accelerated the development of the UI and helped troubleshoot the complex MIME parsing required for reading raw emails.
+ChatGPT
 
-Prompts: Used prompts like "Create a React sidebar component using Lucide icons" and "How to extract a specific regex pattern from an email subject line in Node.js".
+Why:
+UI scaffolding (React + Tailwind)
 
-Known Limitations
-The system currently polls for emails only when "Refresh Inbox" is clicked (on-demand) rather than using webhooks.
+IMAP debugging
 
-It assumes the currency is USD unless specified otherwise.
+Regex extraction logic
+
+Example Prompts:
+“Create a React sidebar using Lucide icons”
+
+“How to extract regex pattern from email subject in Node.js”
+
+⚠️ Known Limitations
+Inbox works on-demand (Refresh Inbox) — no webhook-based real-time sync yet.
+
+Currency defaults to USD unless otherwise stated.
