@@ -1,8 +1,13 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import { Vendor } from '../models/Vendor.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import Vendor from '../models/Vendor.js';
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const seed = async () => {
   try {
@@ -20,7 +25,7 @@ const seed = async () => {
       },
       {
         name: "Budget Laptops Inc",
-        email: "asifa180303@gmail.com", 
+        email: "asifakhatoon1803@gmail.com", 
         category: "Electronics"
       },
       {
