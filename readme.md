@@ -3,15 +3,7 @@
 A full-stack intelligent procurement platform designed to **automate the entire Request for Proposal (RFP) lifecycle**.  
 This system leverages **Generative AI** to convert natural-language requirements into structured data, manage vendor communications via real email channels, and analyze proposals to recommend the best vendor.
 
-> **Submission for Aerchain SDE Assignment**
-
----
-
-## 📺 Demo Video
-👉 *[Insert your demo video link here]*  
-(Please watch for a complete end-to-end walkthrough of the system.)
-
----
+## Submission for Aerchain SDE Assignment
 
 ## 🚀 Features
 
@@ -81,130 +73,101 @@ PORT=3000
 MONGODB_URI=your_mongodb_connection_string
 GEMINI_API_KEY=your_google_gemini_api_key
 
-# Email Configuration (Gmail App Password Required)
 EMAIL_USER=your_test_email@gmail.com
 EMAIL_PASS=your_16_digit_app_password
-2. Installation
-Backend
-bash
-Copy code
+```
+
+## 2. Installation
+```bash
 cd server
 npm install
 npm start
-# Server runs on http://localhost:3000
+```
+### Server runs on http://localhost:3000
 Frontend
-bash
-Copy code
+
+```bash
 cd client
 npm install
 npm run dev
-# Frontend runs on http://localhost:5173
-3. Seed Dummy Vendor Data (Optional)
-bash
-Copy code
+```
+### Frontend runs on http://localhost:5173
+Seed Dummy Vendor Data (Optional)
+
+```bash
 cd server
 node seed.js
-📖 Usage Workflow
-1. Create RFP
-Navigate to New RFP and type a natural language request:
+```
 
-“I need 50 chairs for the new office, budget $5000.”
+## 📖 Usage Workflow
+### 1. Create RFP
+- Navigate to New RFP and type a natural language request:
 
-AI converts it into structured JSON.
+- “I need 50 chairs for the new office, budget $5000.”
 
-2. Send to Vendors
-Select vendors from the list.
+- AI converts it into structured JSON.
 
-Click Send.
+### 2. Send to Vendors
+- Select vendors from the list.
 
-Vendors receive a professional RFP email.
+- Click Send.
 
-3. Vendor Reply
-Vendors reply by email with a quote:
+- Vendors receive a professional RFP email.
 
-“We can provide these for $4500 in 5 days.”
+### 3. Vendor Reply
+- Vendors reply by email with a quote:
 
-⚠️ They must not change the subject line (contains Ref ID).
+- “We can provide these for $4500 in 5 days.”
 
-4. Parse Replies
+- ⚠️ They must not change the subject line (contains Ref ID).
+
+### 4. Parse Replies
 In Dashboard → Inbox, click:
 
-Refresh Inbox
+- Refresh Inbox
 
-The system:
+- The system: Connects via IMAP
 
-Connects via IMAP
+- Fetches new emails
 
-Fetches new emails
+- Matches using Ref ID
 
-Matches using Ref ID
+- Extracts pricing/delivery using AI
 
-Extracts pricing/delivery using AI
+### 5. Analyze Proposals
+- On the RFP Details page → click: Analyze Proposals
 
-5. Analyze Proposals
-On the RFP Details page → click:
+- AI compares proposals and generates:
 
-Analyze Proposals
+- Ranked vendors
 
-AI compares proposals and generates:
+- Score reasoning
 
-Ranked vendors
+- Recommended choice
 
-Score reasoning
 
-Recommended choice
+## 🧠 Design Decisions & Assumptions
+### 1. Reference ID in Subject Line
+- Decision: Add unique Ref:6930... in subject line for tracking.
+- Reason: Most reliable way to match inbound replies without a vendor portal.
+- Assumption: Vendor won’t modify subject line.
 
-📡 API Documentation
-RFP Endpoints
-Method	Endpoint	Description
-POST	/api/rfp	Create a new RFP from natural text
-GET	/api/rfp	Get all RFPs
-POST	/api/rfp/send	Send RFP emails to vendors
-GET	/api/rfp/check-inbox	Trigger IMAP fetch + parse replies
-GET	/api/rfp/:id/analysis	Compare proposals & get AI recommendation
+### 2. AI Extraction Strategy
+- Decision: Two-step AI processing:
 
-Vendor Endpoints
-Method	Endpoint	Description
-GET	/api/vendors	List all vendors
+- Structure user's natural text
 
-🧠 Design Decisions & Assumptions
-1. Reference ID in Subject Line
-Decision: Add unique Ref:6930... in subject line for tracking.
-Reason: Most reliable way to match inbound replies without a vendor portal.
-Assumption: Vendor won’t modify subject line.
+- Normalize vendor replies into JSON (Cost, Delivery Days)
 
-2. AI Extraction Strategy
-Decision: Two-step AI processing:
+- Assumption: Vendors mention price + delivery in email body.
 
-Structure user's natural text
+### 3. Single-User Scope
+- Decision: No multi-tenant auth, focusing on core procurement logic.
+- Reason: Matches assignment requirements.
 
-Normalize vendor replies into JSON (Cost, Delivery Days)
 
-Assumption: Vendors mention price + delivery in email body.
 
-3. Single-User Scope
-Decision: No multi-tenant auth, focusing on core procurement logic.
-Reason: Matches assignment requirements.
+## ⚠️ Known Limitations
+- Inbox works on-demand (Refresh Inbox) — no webhook-based real-time sync yet.
 
-🤖 AI Tools Usage
-Used:
-Gemini Code Assist
-
-ChatGPT
-
-Why:
-UI scaffolding (React + Tailwind)
-
-IMAP debugging
-
-Regex extraction logic
-
-Example Prompts:
-“Create a React sidebar using Lucide icons”
-
-“How to extract regex pattern from email subject in Node.js”
-
-⚠️ Known Limitations
-Inbox works on-demand (Refresh Inbox) — no webhook-based real-time sync yet.
-
-Currency defaults to USD unless otherwise stated.
+- Currency defaults to USD unless otherwise stated.
